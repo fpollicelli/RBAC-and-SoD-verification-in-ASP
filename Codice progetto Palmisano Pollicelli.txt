@@ -1,0 +1,75 @@
+% RBAC e SoD
+sod(team_leader,developer).
+sod(qa_team,developer).
+sod(demo_team,developer).
+sod(qa_team,demo_team).
+
+person(bob;alice;sofie;louis;mark;erik;mary;kelly;john;alex;tony;jenna;conny).
+
+member(bob,product_owner).
+member(louis,team_leader).
+member(alice,team_leader).
+member(alice,developer).
+member(sofie,developer).
+member(tony,developer).
+member(conny,developer).
+member(jenna,developer).
+member(erik,developer).
+member(kelly,developer).
+member(mark,developer).
+member(mark,qa_team).
+member(alex,qa_team).
+member(mary,qa_team).
+member(mary,demo_team).
+member(john,demo_team).
+
+% workflow model
+pathid(1..16).
+pathtasks(1,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,0,1).
+pathtasks(2,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,0,1).
+pathtasks(3,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1).
+pathtasks(4,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,0,1).
+pathtasks(5,1,1,1,1,1,1,0,1,0,1,1,1,0,1,1,1,1).
+pathtasks(6,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1).
+pathtasks(7,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1).
+pathtasks(8,1,1,1,1,1,1,1,1,0,1,1,1,0,1,1,1,1).
+pathtasks(9,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1).
+pathtasks(10,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1).
+pathtasks(11,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1).
+pathtasks(12,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1).
+pathtasks(13,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1).
+pathtasks(14,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1).
+pathtasks(15,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1).
+pathtasks(16,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1).
+
+
+% mapping model
+role(ID,product_owner) :- pathtasks(ID,1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,team_leader) :- pathtasks(ID,T1,1,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,1,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,team_leader) :- pathtasks(ID,T1,T2,T3,1,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,1,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,T5,1,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,1,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,team_leader) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,1,T9,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,team_leader) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,1,T10,T11,T12,T13,T14,T15,T16,T17).
+role(ID,team_leader) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,1,T11,T12,T13,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,1,T12,T13,T14,T15,T16,T17).
+role(ID,qa_team) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,1,T13,T14,T15,T16,T17).
+role(ID,qa_team) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,1,T14,T15,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,1,T15,T16,T17).
+role(ID,demo_team) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,1,T16,T17).
+role(ID,developer) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,1,T17).
+role(ID,product_owner) :- pathtasks(ID,T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,1).
+
+% generate all assignments
+1{act(ID,product_owner,P):person(P)}1 :- role(ID,product_owner).
+2{act(ID,developer,P):person(P)}5 :- role(ID,developer).
+1{act(ID,team_leader,P):person(P)}1 :- role(ID,team_leader).
+1{act(ID,qa_team,P):person(P)}2 :- role(ID,qa_team).
+1{act(ID,demo_team,P):person(P)}2 :- role(ID,demo_team).
+
+% test
+:- person(P),role(ID,R),pathid(ID),act(ID,R,P),not member(P,R).
+:- person(P1;P2),role(ID,R1;ID,R2),pathid(ID),act(ID,R1,P1),act(ID,R2,P2),sod(R1,R2),P1=P2.
+
